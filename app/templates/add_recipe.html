@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Add Recipe - My Recipe App{% endblock %}
+
+{% block content %}
+    <h1>Add a New Recipe</h1>
+    <form method="POST" action="{{ url_for('add_recipe') }}" class="recipe-form">
+        <div class="form-group">
+            <label for="name">Recipe Name:</label>
+            <input type="text" id="name" name="name" class="form-control" value="{{ name or '' }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" class="form-control" rows="3">{{ description or '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="ingredients">Ingredients:</label>
+            <textarea id="ingredients" name="ingredients" class="form-control" rows="5" required placeholder="Enter each ingredient on a new line.">{{ ingredients or '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="instructions">Instructions:</label>
+            <textarea id="instructions" name="instructions" class="form-control" rows="8" required placeholder="Enter each step on a new line.">{{ instructions or '' }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Recipe</button>
+        <a href="{{ url_for('recipes') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}
