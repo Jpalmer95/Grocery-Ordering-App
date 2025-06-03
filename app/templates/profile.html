@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - My Recipe App{% endblock %}
+
+{% block content %}
+    <h1>User Profile</h1>
+    <form method="POST" action="{{ url_for('profile') }}" class="profile-form">
+        <div class="form-group">
+            <label for="dietary_preferences">Dietary Preferences:</label>
+            <select id="dietary_preferences" name="dietary_preferences">
+                <option value="none" {% if preferences.dietary_preferences == 'none' %}selected{% endif %}>None</option>
+                <option value="vegetarian" {% if preferences.dietary_preferences == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
+                <option value="vegan" {% if preferences.dietary_preferences == 'vegan' %}selected{% endif %}>Vegan</option>
+                <option value="gluten_free" {% if preferences.dietary_preferences == 'gluten_free' %}selected{% endif %}>Gluten-Free</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="family_size">Family Size:</label>
+            <input type="number" id="family_size" name="family_size" value="{{ preferences.family_size }}" min="1">
+        </div>
+        <button type="submit" class="btn btn-primary">Save Preferences</button>
+    </form>
+{% endblock %}

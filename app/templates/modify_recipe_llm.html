@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Modify Recipe with AI - My Recipe App{% endblock %}
+
+{% block content %}
+    <h1>Modify Recipe with AI</h1>
+
+    <div class="original-recipe-summary">
+        <h2>Original Recipe: {{ original_recipe.name }}</h2>
+        <p><strong>Description:</strong> {{ original_recipe.description }}</p>
+        <h3>Ingredients:</h3>
+        <pre>{{ original_recipe.ingredients }}</pre>
+        <h3>Instructions:</h3>
+        <pre>{{ original_recipe.instructions }}</pre>
+    </div>
+
+    <hr style="margin: 30px 0;">
+
+    <form method="POST" action="{{ url_for('submit_llm_modification', recipe_id=original_recipe.id) }}" class="llm-prompt-form">
+        <input type="hidden" name="original_name" value="{{ original_recipe.name }}">
+        <input type="hidden" name="original_description" value="{{ original_recipe.description }}">
+        <input type="hidden" name="original_ingredients" value="{{ original_recipe.ingredients }}">
+        <input type="hidden" name="original_instructions" value="{{ original_recipe.instructions }}">
+
+        <div class="form-group">
+            <label for="prompt">How would you like to modify this recipe? (e.g., "make it vegetarian", "add a spicy kick", "double the servings")</label>
+            <input type="text" id="prompt" name="prompt" class="form-control" value="{{ prompt if prompt else '' }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Generate Modified Recipe</button>
+        <a href="{{ url_for('view_recipe', recipe_id=original_recipe.id) }}" class="btn btn-secondary">Cancel Modification</a>
+    </form>
+
+    {% if modified_recipe %}
+        <div class="generated-recipe-area" style="margin-top: 30px;">
+            <h2>AI Modified Recipe Suggestion: {{ modified_recipe.name }}</h2>
+            <p><em>Based on your prompt: "{{ user_prompt }}"</em></p>
+            <p><strong>Description:</strong> {{ modified_recipe.description }}</p>
+
+            <h3>Ingredients:</h3>
+            <pre>{{ modified_recipe.ingredients }}</pre>
+
+            <h3>Instructions:</h3>
+            <pre>{{ modified_recipe.instructions }}</pre>
+
+            <div style="margin-top: 20px;">
+                <a href="{{ url_for('save_ai_recipe_form', name=modified_recipe.name, description=modified_recipe.description, ingredients=modified_recipe.ingredients, instructions=modified_recipe.instructions) }}" class="btn btn-success">
+                    Save This Modified Recipe
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ recipe.name }} - My Recipe App{% endblock %}
+
+{% block content %}
+    <div class="recipe-view">
+        <h1>{{ recipe.name }}</h1>
+
+        {% if recipe.description %}
+            <p class="recipe-description"><strong>Description:</strong> {{ recipe.description }}</p>
+        {% endif %}
+
+        <h3>Ingredients:</h3>
+        <pre class="recipe-ingredients">{{ recipe.ingredients }}</pre>
+
+        <h3>Instructions:</h3>
+        <pre class="recipe-instructions">{{ recipe.instructions }}</pre>
+
+        <div class="recipe-actions" style="margin-top: 20px;">
+            <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="btn btn-warning">Edit Recipe</a>
+            <a href="{{ url_for('modify_recipe_llm_form', recipe_id=recipe.id) }}" class="btn btn-info">Modify with AI</a>
+            <a href="{{ url_for('recipes') }}" class="btn btn-secondary" style="margin-left: 10px;">Back to Recipes List</a>
+        </div>
+    </div>
+{% endblock %}

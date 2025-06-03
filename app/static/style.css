@@ -1,0 +1,406 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+p {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.error {
+    color: red;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Recipe list styling */
+.recipe-list {
+    list-style: none;
+    padding: 0;
+}
+
+.recipe-item {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.recipe-item h2 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.recipe-item p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.recipe-actions .btn {
+    margin-right: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+/* Button styling (basic) */
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-warning {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Profile form styling */
+.profile-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    max-width: 500px; /* Limit form width */
+    margin: 20px auto; /* Center form */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* So padding doesn't affect width */
+}
+
+.profile-form .btn-primary {
+    width: 100%; /* Make button full width */
+    padding: 10px;
+}
+
+/* Recipe Form styling (similar to profile form) */
+.recipe-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    max-width: 700px; /* Wider for recipe form */
+    margin: 20px auto; /* Center form */
+}
+
+.recipe-form .form-group { /* Specific to recipe form if needed, or use generic .form-group */
+    margin-bottom: 15px;
+}
+
+.recipe-form label { /* Specific to recipe form if needed, or use generic label */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.recipe-form input[type="text"],
+.recipe-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* So padding doesn't affect width */
+}
+
+.recipe-form .btn { /* Button styling within recipe form */
+    margin-right: 10px; /* Space out buttons if multiple */
+}
+
+/* Smaller buttons for recipe actions list */
+.recipe-actions .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    margin-right: 5px; /* Ensure spacing is still applied */
+}
+
+.recipe-actions .btn-secondary.btn-sm { /* Specificity for view button if needed */
+    /* background-color: #6c757d;
+    border-color: #6c757d; */
+}
+.recipe-actions .btn-warning.btn-sm { /* Specificity for edit button if needed */
+    /* background-color: #ffc107;
+    border-color: #ffc107; */
+}
+.recipe-actions .btn-danger.btn-sm { /* Specificity for delete button if needed */
+    /* background-color: #dc3545;
+    border-color: #dc3545; */
+}
+
+.recipe-actions form { /* Ensure form itself doesn't add extra margin */
+    display: inline; /* Keep it on the same line as other buttons */
+    margin-bottom: 0;
+}
+
+/* Styling for recipe selection in list */
+.recipe-item .recipe-checkbox { /* More specific selector for the checkbox in the item */
+    float: left; /* Float checkbox to the left */
+    margin-right: 10px;
+    /* Adjust margin-top if needed to align with the start of the recipe name */
+    margin-top: 0.3em; /* Approximate alignment with h2 */
+}
+
+.recipe-item .recipe-label {
+    display: block; /* Make label a block to contain the floated checkbox properly */
+    overflow: hidden; /* Clear the float */
+}
+
+.recipe-item .recipe-label h2 {
+    /* h2 is already block, so it will sit beside/below checkbox depending on space */
+    /* font-size: 1.25rem; /* Keep or adjust as needed */
+    margin-top: 0; /* Remove default h2 margin if it causes alignment issues */
+}
+
+/* The rest of .recipe-item styling for p and .recipe-actions can remain as is or be adjusted */
+/* For example, ensuring they clear the floated checkbox if they are short */
+.recipe-item p, .recipe-item .recipe-actions {
+    clear: left; /* Ensure they don't wrap around the checkbox */
+    padding-left: 25px; /* Indent to align with text after checkbox, adjust as needed */
+}
+
+/* Grocery List styling */
+.list-group {
+    padding-left: 0;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.list-group-item:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+/* To remove double borders between items */
+.list-group-item + .list-group-item {
+    border-top-width: 0;
+}
+
+/* InstaCart Order Page Styling */
+.instacart-item {
+    display: flex;
+    justify-content: space-between; /* Pushes item name and button to opposite ends */
+    align-items: center; /* Vertically aligns item name and button */
+}
+
+.instacart-find-btn {
+    /* background-color: #007bff; /* Example: InstaCart-like blue or green */
+    /* border-color: #007bff; */
+    color: white; /* Assuming a darker background for the button */
+}
+/* Using existing .btn-info for the "Find on InstaCart" button for now */
+.btn-info {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+/* Header for recipe actions (add, generate AI) */
+.recipe-actions-header {
+    margin-bottom: 15px;
+    display: flex; /* Aligns buttons on the same line */
+    gap: 10px; /* Adds space between buttons */
+}
+
+/* LLM Recipe Generation Form & Display */
+.llm-prompt-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.generated-recipe-area {
+    background-color: #e9f7ef; /* A light green background for AI content */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #c8e6c9;
+}
+
+.generated-recipe-area h2 {
+    color: #2e7d32; /* Darker green for title */
+}
+
+.generated-recipe-area h3 {
+    margin-top: 15px;
+    color: #388e3c; /* Medium green for subheadings */
+}
+
+.generated-recipe-area pre {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    white-space: pre-wrap; /* Ensures long lines wrap and respects newlines */
+    font-family: inherit; /* Use the same font as the rest of the page */
+    font-size: 1em;
+}
+
+/* View Recipe Page Styling */
+.recipe-view {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.recipe-view h1 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.recipe-view h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.recipe-view .recipe-description {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.recipe-view pre { /* Shared style with AI generated recipe pre, but can be specific if needed */
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+/* AI Recipe Modification Page Styling */
+.original-recipe-summary {
+    background-color: #fdf5e6; /* A light orange/beige for original recipe */
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #fce5cd;
+    margin-bottom: 20px;
+}
+
+.original-recipe-summary h2 {
+    color: #bf360c; /* Dark orange for title */
+    margin-top: 0;
+}
+
+.original-recipe-summary h3 {
+    margin-top: 10px;
+    color: #dd6732; /* Medium orange for subheadings */
+}
+
+.original-recipe-summary pre {
+    background-color: #fff; /* White background for pre within this section */
+}

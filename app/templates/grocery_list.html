@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - My Recipe App{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    {% if ingredients and ingredients|length > 0 %}
+        <ul class="list-group">
+            {% for ingredient in ingredients %}
+                <li class="list-group-item">{{ ingredient }}</li>
+            {% endfor %}
+        </ul>
+    {% elif ingredients is none %}
+        <p>Select recipes from the <a href="{{ url_for('recipes') }}">Recipes page</a> to generate a grocery list.</p>
+    {% else %}
+        <p>No ingredients in the current grocery list. You might have selected recipes with no ingredients listed or no recipes at all.</p>
+        <p><a href="{{ url_for('recipes') }}">Go back to Recipes to select some.</a></p>
+    {% endif %}
+
+    {% if ingredients and ingredients|length > 0 %}
+    <form method="POST" action="{{ url_for('order_with_instacart') }}" style="margin-top: 20px;">
+        {% for ingredient in ingredients %}
+            <input type="hidden" name="ingredients" value="{{ ingredient }}">
+        {% endfor %}
+        <button type="submit" class="btn btn-success">Order with InstaCart</button>
+    </form>
+    {% endif %}
+    <a href="{{ url_for('recipes') }}" class="btn btn-primary" style="margin-top: 10px;">Back to Recipes</a>
+{% endblock %}

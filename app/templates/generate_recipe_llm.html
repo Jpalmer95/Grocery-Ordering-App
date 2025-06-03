@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Generate Recipe with AI - My Recipe App{% endblock %}
+
+{% block content %}
+    <h1>Generate a New Recipe with AI</h1>
+
+    <form method="POST" action="{{ url_for('generate_recipe_llm') }}" class="llm-prompt-form">
+        <div class="form-group">
+            <label for="prompt">What kind of recipe would you like? (e.g., "a quick pasta dish with chicken", "a vegan dessert")</label>
+            <input type="text" id="prompt" name="prompt" class="form-control" value="{{ prompt if prompt else '' }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Generate Recipe</button>
+        <a href="{{ url_for('recipes') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+
+    {% if generated_recipe %}
+        <div class="generated-recipe-area" style="margin-top: 30px;">
+            <h2>AI Generated Recipe: {{ generated_recipe.name }}</h2>
+            <p><strong>Description:</strong> {{ generated_recipe.description }}</p>
+
+            <h3>Ingredients:</h3>
+            <pre>{{ generated_recipe.ingredients }}</pre> {# Using <pre> to respect newlines #}
+
+            <h3>Instructions:</h3>
+            <pre>{{ generated_recipe.instructions }}</pre> {# Using <pre> to respect newlines #}
+
+            <div style="margin-top: 20px;">
+                <a href="{{ url_for('save_ai_recipe_form', name=generated_recipe.name, description=generated_recipe.description, ingredients=generated_recipe.ingredients, instructions=generated_recipe.instructions) }}" class="btn btn-success">
+                    Save This AI Recipe
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
