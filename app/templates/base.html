@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+{# Dynamically set data-theme attribute on html tag using context processor #}
+{% set theme = get_current_theme() %}
+<html lang="en" {% if theme != 'system' %}data-theme="{{ theme }}"{% else %}data-theme-setting="system"{% endif %}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,14 +14,83 @@
             <li><a href="{{ url_for('index') }}">Home</a></li>
             <li><a href="{{ url_for('recipes') }}">Recipes</a></li>
             <li><a href="{{ url_for('grocery_list') }}">Grocery List</a></li>
-            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('profile') }}">Profile ({{ current_user.name or current_user.email }})</a></li>
+                {% if current_user.profile_pic_url %}
+                    <li><img src="{{ current_user.profile_pic_url }}" alt="Profile Pic" style="height: 30px; border-radius: 50%; vertical-align: middle; margin-left: 5px;"></li>
+                {% endif %}
+                <li><a href="{{ url_for('auth_bp.logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('profile') }}">Profile</a></li> {# Or hide if no anonymous profile page #}
+                <li><a href="{{ url_for('auth_bp.google.login') }}">Login with Google</a></li>
+            {% endif %}
         </ul>
     </nav>
+
+    {# Flash messages #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flashed-messages" style="padding: 10px; margin-bottom:15px;">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category if category != 'message' else 'info' }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
     <div class="container">
         {% block content %}{% endblock %}
     </div>
     <footer>
         <p>&copy; 2024 My Recipe App</p>
     </footer>
+
+    <footer>
+        <p>&copy; 2024 My Recipe App</p>
+    </footer>
+
+    <script>
+        (function() {
+            // This script now focuses on applying 'system' preference.
+            // Explicit 'light' or 'dark' themes are set directly by Flask in the `data-theme` attribute.
+            // If `data-theme-setting="system"` is present, or if no `data-theme` is set at all (for anonymous users),
+            // then we apply the OS/browser preference.
+
+            const htmlElement = document.documentElement;
+            const explicitUserTheme = htmlElement.getAttribute('data-theme'); // Directly set by Flask for light/dark
+            const systemThemeSetting = htmlElement.getAttribute('data-theme-setting'); // Set to 'system' by Flask
+
+            function applySystemTheme() {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    htmlElement.setAttribute('data-theme', 'dark');
+                } else {
+                    htmlElement.setAttribute('data-theme', 'light');
+                }
+            }
+
+            if (systemThemeSetting === 'system' && !explicitUserTheme) {
+                applySystemTheme();
+                // Listen for OS theme changes if "system" is selected by user
+                try { // Add try/catch for older browser compatibility with addEventListener
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
+                } catch (e) {
+                    console.error("Error adding system theme change listener:", e);
+                }
+            } else if (!explicitUserTheme && !systemThemeSetting) {
+                // Fallback for anonymous users or if theme setting somehow not passed, default to system
+                applySystemTheme();
+            }
+            // If explicitUserTheme is 'light' or 'dark', it's already set on <html> by Flask, so nothing to do here.
+
+            // Clean up the temporary attribute if it was used
+            if (systemThemeSetting) {
+                htmlElement.removeAttribute('data-theme-setting');
+            }
+        })();
+    </script>
 </body>
 </html>

@@ -10,27 +10,62 @@
             <label for="prompt">What kind of recipe would you like? (e.g., "a quick pasta dish with chicken", "a vegan dessert")</label>
             <input type="text" id="prompt" name="prompt" class="form-control" value="{{ prompt if prompt else '' }}" required>
         </div>
+        <div class="form-group">
+            <label for="provider">Choose AI Provider:</label>
+            <select name="provider" id="provider" class="form-control">
+                {% for p in available_providers %}
+                    <option value="{{ p.value }}" {% if p.value == selected_provider %}selected{% endif %} {% if not p.configured and p.value != 'placeholder' %}disabled{% endif %}>
+                        {{ p.name }} {% if not p.configured and p.value != 'placeholder' %}(API Key Not Set){% endif %}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Generate Recipe</button>
         <a href="{{ url_for('recipes') }}" class="btn btn-secondary">Cancel</a>
     </form>
 
-    {% if generated_recipe %}
-        <div class="generated-recipe-area" style="margin-top: 30px;">
-            <h2>AI Generated Recipe: {{ generated_recipe.name }}</h2>
-            <p><strong>Description:</strong> {{ generated_recipe.description }}</p>
-
-            <h3>Ingredients:</h3>
-            <pre>{{ generated_recipe.ingredients }}</pre> {# Using <pre> to respect newlines #}
-
-            <h3>Instructions:</h3>
-            <pre>{{ generated_recipe.instructions }}</pre> {# Using <pre> to respect newlines #}
-
-            <div style="margin-top: 20px;">
-                <a href="{{ url_for('save_ai_recipe_form', name=generated_recipe.name, description=generated_recipe.description, ingredients=generated_recipe.ingredients, instructions=generated_recipe.instructions) }}" class="btn btn-success">
-                    Save This AI Recipe
-                </a>
-            </div>
+    {% if error_message %}
+        <div class="alert alert-danger" style="margin-top: 20px;">
+            <strong>Error:</strong> {{ error_message }}
+            {% if error_details %}
+                <p><small>Details: {{ error_details }}</small></p>
+            {% endif %}
         </div>
+    {% endif %}
+
+    {# Only show recipe details if no critical error and recipe data is present #}
+    {% if generated_recipe and not error_message or (error_message and generated_recipe and generated_recipe.name and 'Parsing Failed' in generated_recipe.name) %}
+        <div class="generated-recipe-area" style="margin-top: 30px;">
+            <h2>AI Generated Recipe: {{ generated_recipe.name if generated_recipe.name else 'N/A' }}</h2>
+
+            {% if generated_recipe.description %}
+            <p><strong>Description:</strong> {{ generated_recipe.description }}</p>
+            {% endif %}
+
+            {% if generated_recipe.ingredients %}
+            <h3>Ingredients:</h3>
+            <pre>{{ generated_recipe.ingredients }}</pre>
+            {% endif %}
+
+            {% if generated_recipe.instructions %}
+            <h3>Instructions:</h3>
+            <pre>{{ generated_recipe.instructions }}</pre>
+            {% endif %}
+
+            {# Only show save button if there was no major error and key fields are present #}
+            {% if not error_message or ('Parsing Failed' in (generated_recipe.name|string)) %}
+                {% if generated_recipe.name and generated_recipe.ingredients and generated_recipe.instructions %}
+                <div style="margin-top: 20px;">
+                    <a href="{{ url_for('save_ai_recipe_form', name=generated_recipe.name, description=generated_recipe.description, ingredients=generated_recipe.ingredients, instructions=generated_recipe.instructions) }}" class="btn btn-success">
+                        Save This AI Recipe
+                    </a>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% elif not error_message %}
+        {# Optionally, show a message if it's not an error and no recipe, e.g., first load #}
+        {# <p style="margin-top: 20px;">Enter a prompt above and click "Generate Recipe".</p> #}
     {% endif %}
 
 {% endblock %}
