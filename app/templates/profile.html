@@ -17,8 +17,52 @@
         </div>
         <div class="form-group">
             <label for="family_size">Family Size:</label>
-            <input type="number" id="family_size" name="family_size" value="{{ preferences.family_size }}" min="1">
+            <input type="number" id="family_size" name="family_size" value="{{ preferences.family_size if preferences else '' }}" min="1">
         </div>
-        <button type="submit" class="btn btn-primary">Save Preferences</button>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="dietary_restrictions">Dietary Restrictions (comma-separated)</label>
+            <textarea class="form-control" id="dietary_restrictions" name="dietary_restrictions" rows="3">{{ user_settings.dietary_restrictions if user_settings and user_settings.dietary_restrictions else '' }}</textarea>
+            <small class="form-text text-muted">E.g., vegetarian, gluten-free, no nuts</small>
+        </div>
+
+        <hr style="margin: 20px 0;">
+        <h3>API Key Management</h3>
+        <div class="form-group">
+            <label for="hugging_face_api_key">Hugging Face API Key:</label>
+            <input type="password" id="hugging_face_api_key" name="hugging_face_api_key" value="{{ user_settings.hugging_face_api_key if user_settings and user_settings.hugging_face_api_key else '' }}" class="form-control">
+            <small class="form-text text-muted">Leave blank to keep existing key or if not setting one.</small>
+        </div>
+        <div class="form-group">
+            <label for="gemini_api_key">Google Gemini API Key:</label>
+            <input type="password" id="gemini_api_key" name="gemini_api_key" value="{{ user_settings.gemini_api_key if user_settings and user_settings.gemini_api_key else '' }}" class="form-control">
+            <small class="form-text text-muted">Leave blank to keep existing key or if not setting one.</small>
+        </div>
+
+        <hr style="margin: 20px 0;">
+        <h3>Grocery Delivery Integrations (Planned)</h3>
+        <div class="form-group">
+            <label for="instacart_api_key">InstaCart API Key (Future)</label>
+            <input type="password" class="form-control" id="instacart_api_key" name="instacart_api_key" placeholder="InstaCart integration coming soon" disabled>
+        </div>
+        <div class="form-group">
+            <label for="favor_api_key">Favor API Key (Future)</label>
+            <input type="password" class="form-control" id="favor_api_key" name="favor_api_key" placeholder="Favor integration coming soon" disabled>
+        </div>
+        <small class="form-text text-muted">These integrations are planned for a future update.</small>
+
+
+        <hr style="margin: 20px 0;">
+        <h3>Theme Preference</h3>
+        <div class="form-group">
+            <label for="theme">Site Theme</label>
+            <select class="form-control" id="theme" name="theme">
+                <option value="light" {% if user_settings and user_settings.theme == 'light' %}selected{% endif %}>Light</option>
+                <option value="dark" {% if user_settings and user_settings.theme == 'dark' %}selected{% endif %}>Dark</option>
+                <option value="system" {% if user_settings and user_settings.theme == 'system' %}selected{% endif %}>System Preference</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Save All Settings</button>
     </form>
 {% endblock %}
